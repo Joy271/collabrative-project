@@ -11,6 +11,9 @@
  * 
  * documentation
  */
+function Question (num: number) {
+    game.showLongText(game.askForNumber(""), DialogLayout.Bottom)
+}
 function Sprites () {
     mySprite = sprites.create(img`
         . . . . f f f f . . . . . 
