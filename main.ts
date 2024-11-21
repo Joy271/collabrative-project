@@ -11,8 +11,70 @@
  * 
  * documentation
  */
-function Question (num: number) {
-    game.showLongText(game.askForNumber(""), DialogLayout.Bottom)
+function checkScore () {
+    if (mp.getPlayerState(mp.playerSelector(mp.PlayerNumber.One), MultiplayerState.score) > mp.getPlayerState(mp.playerSelector(mp.PlayerNumber.Two), MultiplayerState.score)) {
+        return true
+    } else {
+        return false
+    }
+}
+function question2 () {
+    game.showLongText("What is the one person card game that microsoft included on it's earliest machines?", DialogLayout.Bottom)
+    answer2 = game.askForString("Player 2, What is the one person card game that Microsoft included on it's earliest machines?")
+    if (answer2 == "solitare") {
+        game.splash("Correct")
+        mp.changePlayerStateBy(mp.playerSelector(mp.PlayerNumber.Two), MultiplayerState.score, 1)
+    } else {
+        game.splash("Incorrect")
+    }
+}
+function question1 () {
+    game.showLongText("What letter is used to paste info when clicked with Ctrl?", DialogLayout.Bottom)
+    answer1 = game.askForString("Player 1, What letter is used to paste info when clicked with Ctrl?")
+    if (answer1 == "v") {
+        game.splash("Correct")
+        mp.changePlayerStateBy(mp.playerSelector(mp.PlayerNumber.One), MultiplayerState.score, 1)
+    } else {
+        game.splash("Incorrect")
+    }
+}
+function question3 () {
+    game.showLongText("Player 1,What three letter internet initialism for laughing was added to the Oxford English Dictionary in 2011?", DialogLayout.Bottom)
+    answer3 = game.askForString("Player 1,What three letter internet initialism for laughing was added to the Oxford English Dictionary in 2011?")
+    if (answer3 == "lol") {
+        game.splash("Correct")
+        mp.changePlayerStateBy(mp.playerSelector(mp.PlayerNumber.One), MultiplayerState.score, 1)
+    } else {
+        game.splash("Incorrect")
+    }
+}
+function question4 () {
+    game.showLongText("what technology company focused on payments has owned venmo since 2013?", DialogLayout.Bottom)
+    answer4 = game.askForString("Player 2, what technology company focused on payments has owned venmo since 2013? ")
+    if (answer4 == "paypal") {
+        game.splash("Correct")
+        mp.changePlayerStateBy(mp.playerSelector(mp.PlayerNumber.Two), MultiplayerState.score, 1)
+    } else {
+        game.splash("Incorrect")
+    }
+}
+function Winner () {
+    if (checkScore()) {
+        game.splash("Player 1 wins!")
+        while (true) {
+            effects.confetti.startScreenEffect()
+        }
+    } else if (mp.getPlayerState(mp.playerSelector(mp.PlayerNumber.One), MultiplayerState.score) == mp.getPlayerState(mp.playerSelector(mp.PlayerNumber.Two), MultiplayerState.score)) {
+        game.splash("Both player win!")
+        while (true) {
+            effects.confetti.startScreenEffect()
+        }
+    } else {
+        game.splash("Player 2 wins!")
+        while (true) {
+            effects.confetti.startScreenEffect()
+        }
+    }
 }
 function Sprites () {
     mySprite = sprites.create(img`
@@ -56,42 +118,12 @@ function Sprites () {
     mySprite2.setPosition(127, 67)
     mySprite.sayText("Welcome to trivia night!")
 }
+let answer4 = ""
+let answer3 = ""
+let answer1 = ""
+let answer2 = ""
 let mySprite: Sprite = null
 let mySprite2: Sprite = null
-let mySprite3 = sprites.create(img`
-    ...........ccccc66666...........
-    ........ccc4444444444666........
-    ......cc444444444bb4444466......
-    .....cb4444bb4444b5b444444b.....
-    ....eb4444b5b44444b44444444b....
-    ...ebb44444b4444444444b444446...
-    ..eb6bb444444444bb444b5b444446..
-    ..e6bb5b44444444b5b444b44bb44e..
-    .e66b4b4444444444b4444444b5b44e.
-    .e6bb444444444444444444444bb44e.
-    eb66b44444bb444444444444444444be
-    eb66bb444b5b44444444bb44444444be
-    fb666b444bb444444444b5b4444444bf
-    fcb666b44444444444444bb444444bcf
-    .fbb6666b44444444444444444444bf.
-    .efbb66666bb4444444444444444bfe.
-    .86fcbb66666bbb44444444444bcc688
-    8772effcbbbbbbbbbbbbbbbbcfc22778
-    87722222cccccccccccccccc22226678
-    f866622222222222222222222276686f
-    fef866677766667777776667777fffef
-    fbff877768f86777777666776fffffbf
-    fbeffeefffeff7766688effeeeefeb6f
-    f6bfffeffeeeeeeeeeeeeefeeeeebb6e
-    f66ddfffffeeeffeffeeeeeffeedb46e
-    .c66ddd4effffffeeeeeffff4ddb46e.
-    .fc6b4dddddddddddddddddddb444ee.
-    ..ff6bb444444444444444444444ee..
-    ....ffbbbb4444444444444444ee....
-    ......ffebbbbbb44444444eee......
-    .........fffffffcccccee.........
-    ................................
-    `, SpriteKind.Player)
 scene.setBackgroundImage(img`
     eeeee2222222222222222222222222222222222ee2222ee2222ee2222222eeeee2222222222222222222222222222222222ee22222eeee222ee2eeeee2222222222222222222222222222222222ee222
     222eeeee22222222222222222222222222222eee2222eeee2222ee222222222eeeee22222222222222222222222222222eee2222eeeee222ee22222eeeee22222222222222222222222222222eee2222
@@ -214,6 +246,8 @@ scene.setBackgroundImage(img`
     222222e2ebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbe2e222222
     222222eeebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbeee222222
     `)
+mp.setPlayerState(mp.playerSelector(mp.PlayerNumber.One), MultiplayerState.score, 0)
+mp.setPlayerState(mp.playerSelector(mp.PlayerNumber.Two), MultiplayerState.score, 0)
 Sprites()
 pause(5000)
 let imput = game.askForString("Would you like to play?")
@@ -224,3 +258,9 @@ if (imput == "yes") {
 } else {
     game.gameOver(false)
 }
+question1()
+question2()
+question3()
+question4()
+Winner()
+sprites.destroy(mySprite)
